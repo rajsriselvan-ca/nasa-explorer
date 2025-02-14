@@ -36,7 +36,6 @@ const APOD = () => {
     return <div>No data available.</div>;
   }
 
-  // Check if the URL is a YouTube video
   const isYouTubeVideo = data.url.includes('youtube.com') || data.url.includes('youtu.be');
 
   return (
@@ -52,7 +51,6 @@ const APOD = () => {
       ) : (
         <div className="w-full max-w-2xl rounded-lg shadow-md overflow-hidden">
           {isYouTubeVideo ? (
-            // Embed YouTube video using the YouTube iframe API
             <iframe
               src={`https://www.youtube.com/embed/${getYouTubeVideoId(data.url)}`}
               title={data.title}
@@ -61,7 +59,6 @@ const APOD = () => {
               allowFullScreen
             />
           ) : (
-            // Fallback to a generic video player
             <video controls className="w-full h-96">
               <source src={data.url} type="video/mp4" />
               Your browser does not support the video tag.
@@ -73,7 +70,6 @@ const APOD = () => {
     </div>
   );
 };
-
 // Helper function to extract YouTube video ID from URL
 const getYouTubeVideoId = (url: string): string => {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;

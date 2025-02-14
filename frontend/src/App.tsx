@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; 
 import "tailwindcss/tailwind.css";
 import SpaceBackground from './ui-components/spaceBackground';
 import CurvedMenu from './ui-components/curvedMenu';
@@ -13,7 +13,7 @@ import ImageLibrary from './components/imageLibrary';
 
 
 const App = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(true); 
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
 
   return (
     <Router>
@@ -23,11 +23,12 @@ const App = () => {
         <Header />
         <div className={`relative z-10 pt-24 p-8 transition-all duration-300 ${isMenuOpen ? 'blur-sm' : ''}`}>
           <Routes>
+            <Route path="/" element={<Navigate to="/apod" />} />
             <Route path="/apod" element={<APOD />} />
             <Route path="/mars-rover" element={<MarsRover />} />
             <Route path="/epic" element={<EPIC />} />
             <Route path="/neows" element={<NeoWs />} />
-            <Route path="/epic" element={<ImageLibrary />} />
+            <Route path="/image-library" element={<ImageLibrary />} />
           </Routes>
         </div>
       </div>

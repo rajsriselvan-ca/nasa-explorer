@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import {MarsRoverPhoto} from '../types/marsRoverPhoto_types';
+import { MarsRoverPhoto } from '../types/marsRoverPhoto_types';
+import { motion } from 'framer-motion'; 
 
 const NASA_API_KEY = import.meta.env.VITE_NASA_API_KEY;
 
@@ -43,9 +44,14 @@ const MarsRover = () => {
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Mars Rover Photos</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {photos.map((photo) => (
-          <div
+        {photos.map((photo, index) => (
+          <motion.div
             key={photo.id}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            whileHover={{ y: -10 }} 
+            transition={{ type: 'spring', stiffness: 300, duration: 0.5, delay: index * 0.1 }}
+            viewport={{ once: true }}
             className="border rounded-lg shadow-lg overflow-hidden text-black bg-gradient-to-b from-white to-gray-400"
           >
             <img
@@ -58,7 +64,7 @@ const MarsRover = () => {
               <p>Earth Date: {photo.earth_date}</p>
               <p>Rover: {photo.rover.name}</p>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

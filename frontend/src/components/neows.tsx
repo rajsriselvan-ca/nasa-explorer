@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import {NearEarthObject} from '../types/nearEarthObject_types';
+import {NeoData} from '../types/neoData_types';
 
 const NASA_API_KEY = import.meta.env.VITE_NASA_API_KEY;
 
 const NeoWs = () => {
-  const [data, setData] = useState<Record<string, NearEarthObject[]> | null>(null);
+  const [data, setData] = useState<Record<string, NeoData[]> | null>(null);
 
   useEffect(() => {
     axios.get(`https://api.nasa.gov/neo/rest/v1/feed?api_key=${NASA_API_KEY}`)
@@ -20,7 +20,7 @@ const NeoWs = () => {
         <div key={date}>
           <h3>{date}</h3>
           <ul>
-            {data[date]?.map((obj: NearEarthObject) => (
+            {data[date]?.map((obj: NeoData) => (
               <li key={obj.id}>
                 <strong>{obj.name}</strong> <br />
                 Diameter: {obj.estimated_diameter.kilometers.estimated_diameter_min.toFixed(2)} - {obj.estimated_diameter.kilometers.estimated_diameter_max.toFixed(2)} km <br />

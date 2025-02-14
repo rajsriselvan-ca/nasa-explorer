@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import {EPICResponse} from '../types/epicResponse_types';
+import { EPICResponse } from '../types/epicResponse_types';
+import { FaInfoCircle } from 'react-icons/fa'; 
 
 const NASA_API_KEY = import.meta.env.VITE_NASA_API_KEY;
 
@@ -8,6 +9,10 @@ const EPIC = () => {
   const [data, setData] = useState<EPICResponse[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [showDescription, setShowDescription] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const infoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchEPICData = async () => {
@@ -15,7 +20,6 @@ const EPIC = () => {
         const response = await axios.get(
           `https://api.nasa.gov/EPIC/api/natural/images?api_key=${NASA_API_KEY}`
         );
-        console.log('API Response:', response.data); 
         setData(response.data);
         setLoading(false);
       } catch (error) {
@@ -27,6 +31,38 @@ const EPIC = () => {
 
     fetchEPICData();
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (infoRef.current && !infoRef.current.contains(event.target as Node)) {
+        setShowDescription(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        prevSlide();
+      } else if (event.key === 'ArrowRight') {
+        nextSlide();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentIndex, data]); 
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % (data?.length || 1));
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + (data?.length || 1)) % (data?.length || 1));
+  };
 
   if (loading) {
     return <div>Loading EPIC images...</div>;
@@ -40,36 +76,60 @@ const EPIC = () => {
     return <div>No EPIC images available.</div>;
   }
 
-  return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Earth Polychromatic Imaging Camera (EPIC)</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {data.map((item) => {
-          // Extract year, month, and day from the date field
-          const date = new Date(item.date);
-          const year = date.getUTCFullYear();
-          const month = String(date.getUTCMonth() + 1).padStart(2, '0'); 
-          const day = String(date.getUTCDate()).padStart(2, '0');
-          const imageUrl = `https://epic.gsfc.nasa.gov/archive/natural/${year}/${month}/${day}/png/${item.image}.png`;
+  const currentItem = data[currentIndex];
+  const date = new Date(currentItem.date);
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const imageUrl = `https://epic.gsfc.nasa.gov/archive/natural/${year}/${month}/${day}/png/${currentItem.image}.png`;
 
-          return (
-            <div key={item.identifier} className="border rounded-lg shadow-lg overflow-hidden">
-              <img
-                src={imageUrl}
-                alt={item.caption}
-                className="w-full h-48 object-cover"
-                onError={(e) => {
-                  console.error('Image failed to load:', imageUrl); 
-                  e.currentTarget.src = 'path/to/fallback/image.png'; 
-                }}
-              />
-              <div className="p-4">
-                <p className="text-sm text-gray-600">{item.caption}</p>
-                <p className="text-sm text-gray-500">Date: {item.date}</p>
+  return (
+    <div className="flex flex-col items-center">
+      <h2 className="text-1xl text-white font-bold">
+        Earth Polychromatic Imaging Camera (EPIC)
+      </h2>
+      <div className="relative w-full max-w-4xl">
+        <div className="relative overflow-hidden rounded-lg shadow-lg">
+          <img
+            ref={imageRef}
+            src={imageUrl}
+            alt={currentItem.caption}
+            className="w-full h-auto object-contain"
+            onError={(e) => {
+              console.error("Image failed to load:", imageUrl);
+              e.currentTarget.src = "path/to/fallback/image.png";
+            }}
+          />
+
+          <div ref={infoRef} className="absolute top-2 right-2">
+            <button
+              onClick={() => setShowDescription(!showDescription)}
+              className="text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75"
+            >
+              <FaInfoCircle size={20} />
+            </button>
+            {showDescription && (
+              <div className="absolute right-0 mt-2 w-64 bg-black bg-opacity-75 text-white p-4 rounded-lg">
+                <p className="text-sm">{currentItem.caption}</p>
+                <p className="text-sm">Date: {currentItem.date}</p>
               </div>
-            </div>
-          );
-        })}
+            )}
+          </div>
+        </div>
+        <button
+          onClick={prevSlide}
+          className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white rounded-full p-4 hover:bg-opacity-75 transition-all hover:scale-105 active:scale-95 active:shadow-inner"
+          style={{ fontSize: "24px" }}
+        >
+          &larr;
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white rounded-full p-4 hover:bg-opacity-75 transition-all hover:scale-105 active:scale-95 active:shadow-inner"
+          style={{ fontSize: "24px" }}
+        >
+          &rarr;
+        </button>
       </div>
     </div>
   );

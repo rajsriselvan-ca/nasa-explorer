@@ -1,106 +1,116 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import {ImageLibraryItem} from '../types/imageLibrary_types';
+import { BarChart, ScatterChart, LineChart, DoughnutChart, RadarChart, Heatmap } from '../ui-components/charts';
+import { motion } from 'framer-motion'; 
+import {NeoData} from '../types/neoData_types';
 
-const ImageLibrary = () => {
-  const [data, setData] = useState<ImageLibraryItem[] | null>(null);
+const NeoVisualization = () => {
+  const [neoData, setNeoData] = useState<NeoData[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchImageLibraryData = async () => {
+    const fetchNeoData = async () => {
       try {
-        // Fetch the list of items
-        const response = await axios.get(`https://images-api.nasa.gov/search?q=moon`);
-        const items = response.data.collection.items;
-
-        // Limit to top 10 items
-        const top10Items = items.slice(0, 10);
-
-        // Fetch media URLs for each of the top 10 items
-        const itemsWithMedia = await Promise.all(
-          top10Items.map(async (item: ImageLibraryItem) => {
-            try {
-              const mediaResponse = await axios.get(item.href);
-              return {
-                ...item,
-                links: mediaResponse.data || [], 
-              };
-            } catch (error) {
-              console.error('Error fetching media URLs:', error);
-              return {
-                ...item,
-                links: [], 
-              };
-            }
-          })
+        const apiKey = 'DEMO_KEY'; 
+        const response = await axios.get<{ near_earth_objects: Record<string, NeoData[]> }>(
+          `https://api.nasa.gov/neo/rest/v1/feed?start_date=2023-10-01&end_date=2023-10-07&api_key=${apiKey}`
         );
 
-        setData(itemsWithMedia);
+        const flattenedData = Object.values(response.data.near_earth_objects).flat();
+        setNeoData(flattenedData);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching Image Library data:', error);
-        setError('Failed to fetch Image Library data. Please try again later.');
+        console.error('Error fetching NEO data:', error);
+        setError('Failed to fetch NEO data. Please try again later.');
         setLoading(false);
       }
     };
 
-    fetchImageLibraryData();
+    fetchNeoData();
   }, []);
 
   if (loading) {
-    return <div>Loading NASA Image & Video Library...</div>;
+    return <div>Loading NEO data...</div>;
   }
 
   if (error) {
     return <div className="text-red-500">{error}</div>;
   }
 
-  if (!data || data.length === 0) {
-    return <div>No images or videos available.</div>;
+  if (!neoData || neoData.length === 0) {
+    return <div>No NEO data available.</div>;
   }
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">NASA Image & Video Library</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {data.map((item, index) => {
-          const mediaUrl = (item.links || [])
-            .filter((link) => !link.href.endsWith('metadata.json')) // Exclude metadata files
-            .find((link) => link.href.match(/\.(jpg|jpeg|png|gif|mp4|webm)$/i)) 
-            ?.href;
+    <div className="p-8 bg-gray-100 min-h-screen">
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        <h2 className="text-2xl font-bold mb-6">Near Earth Objects (NEO) Visualization</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <motion.div
+            className="bg-gray-50 p-4 rounded-lg shadow-md"
+            whileHover={{ scale: 1.05, rotate: 2 }} 
+            whileTap={{ scale: 0.95 }} 
+            transition={{ type: 'spring', stiffness: 300 }} 
+          >
+            <h3 className="text-lg font-semibold mb-4">Asteroid Size Distribution</h3>
+            <BarChart data={neoData} />
+          </motion.div>
 
-          return (
-            <div key={index} className="border rounded-lg shadow-lg overflow-hidden">
-              {mediaUrl ? (
-                mediaUrl.match(/\.(mp4|webm)$/i) ? ( // Check if it's a video
-                  <video controls className="w-full h-48 object-cover">
-                    <source src={mediaUrl} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                ) : (
-                  <img
-                    src={mediaUrl}
-                    alt={item.data[0]?.title || 'NASA Media'}
-                    className="w-full h-48 object-cover"
-                  />
-                )
-              ) : (
-                <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
-                  <p className="text-gray-500">No media available</p>
-                </div>
-              )}
-              <div className="p-4">
-                <h3 className="font-semibold">{item.data[0]?.title}</h3>
-                <p className="text-sm text-gray-600">{item.data[0]?.description}</p>
-                <p className="text-sm text-gray-500">Date Created: {item.data[0]?.date_created}</p>
-              </div>
-            </div>
-          );
-        })}
+          <motion.div
+            className="bg-gray-50 p-4 rounded-lg shadow-md"
+            whileHover={{ scale: 1.05, rotate: 2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            <h3 className="text-lg font-semibold mb-4">Velocity vs. Miss Distance</h3>
+            <ScatterChart data={neoData} />
+          </motion.div>
+
+          <motion.div
+            className="bg-gray-50 p-4 rounded-lg shadow-md"
+            whileHover={{ scale: 1.05, rotate: 2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            <h3 className="text-lg font-semibold mb-4">Close Approaches Over Time</h3>
+            <LineChart data={neoData} />
+          </motion.div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <motion.div
+            className="bg-gray-50 p-4 rounded-lg shadow-md"
+            whileHover={{ scale: 1.05, rotate: 2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            <h3 className="text-lg font-semibold mb-4">Hazardous vs. Non-Hazardous</h3>
+            <DoughnutChart data={neoData} />
+          </motion.div>
+
+          <motion.div
+            className="bg-gray-50 p-4 rounded-lg shadow-md"
+            whileHover={{ scale: 1.05, rotate: 2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            <h3 className="text-lg font-semibold mb-4">Asteroid Radar</h3>
+            <RadarChart data={neoData} />
+          </motion.div>
+
+          <motion.div
+            className="bg-gray-50 p-4 rounded-lg shadow-md"
+            whileHover={{ scale: 1.05, rotate: 2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            <h3 className="text-lg font-semibold mb-4">Heatmap of Close Approaches</h3>
+            <Heatmap data={neoData} />
+          </motion.div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default ImageLibrary;
+export default NeoVisualization;
