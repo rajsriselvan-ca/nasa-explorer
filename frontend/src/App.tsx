@@ -13,7 +13,7 @@ import ImageLibrary from './components/imageLibrary';
 
 
 const App = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <Router>

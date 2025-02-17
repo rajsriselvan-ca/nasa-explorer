@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { APODResponse } from '../types/apodResponse_types';
-import { fetchAPOD } from '../api/nasaApi'; 
+import { fetchAPOD } from '../api/nasaApi';
+import Loader from '../ui-components/loader'; 
 
 const APOD = () => {
   const [data, setData] = useState<APODResponse | null>(null);
@@ -21,7 +22,7 @@ const APOD = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;   
+    return <Loader />; 
   }
 
   if (error) {
@@ -66,6 +67,7 @@ const APOD = () => {
     </div>
   );
 };
+
 // Helper function to extract YouTube video ID from URL
 const getYouTubeVideoId = (url: string): string => {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;

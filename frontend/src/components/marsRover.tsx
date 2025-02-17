@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { MarsRoverPhoto } from '../types/marsRoverPhoto_types';
 import { motion } from 'framer-motion';
-import { fetchMarsRoverPhotos } from '../api/nasaApi'; 
+import { fetchMarsRoverPhotos } from '../api/nasaApi';
+import Loader from '../ui-components/loader'; 
 
 const MarsRover = () => {
   const [photos, setPhotos] = useState<MarsRoverPhoto[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  
   useEffect(() => {
     fetchMarsRoverPhotos()
       .then((response) => {
@@ -22,7 +23,7 @@ const MarsRover = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading Mars Rover photos...</div>;
+    return <Loader />; // Replace with the Loader component
   }
 
   if (error) {
@@ -42,7 +43,7 @@ const MarsRover = () => {
             key={photo.id}
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            whileHover={{ y: -10 }} 
+            whileHover={{ y: -10 }}
             transition={{ type: 'spring', stiffness: 300, duration: 0.5, delay: index * 0.1 }}
             viewport={{ once: true }}
             className="border rounded-lg shadow-lg overflow-hidden text-black bg-gradient-to-b from-white to-gray-400"

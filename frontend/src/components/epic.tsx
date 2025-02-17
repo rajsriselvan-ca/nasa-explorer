@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { EPICResponse } from '../types/epicResponse_types';
 import { FaInfoCircle } from 'react-icons/fa';
-import { fetchEPIC } from '../api/nasaApi'; 
+import { fetchEPIC } from '../api/nasaApi';
+import Loader from '../ui-components/loader'; 
 
 const EPIC = () => {
   const [data, setData] = useState<EPICResponse[] | null>(null);
@@ -47,7 +48,7 @@ const EPIC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentIndex, data]); 
+  }, [currentIndex, data]);
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % (data?.length || 1));
@@ -58,7 +59,7 @@ const EPIC = () => {
   };
 
   if (loading) {
-    return <div>Loading EPIC images...</div>;
+    return <Loader />; 
   }
 
   if (error) {

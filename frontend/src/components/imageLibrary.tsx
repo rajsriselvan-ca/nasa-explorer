@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { BarChart, ScatterChart, LineChart, DoughnutChart, RadarChart, Heatmap } from '../ui-components/charts';
 import { motion } from 'framer-motion';
 import { NeoData } from '../types/neoData_types';
-import { fetchNeo } from '../api/nasaApi'; 
+import { fetchNeo } from '../api/nasaApi';
+import Loader from '../ui-components/loader'; 
 
 const NeoVisualization = () => {
   const [neoData, setNeoData] = useState<NeoData[] | null>(null);
@@ -23,7 +24,7 @@ const NeoVisualization = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading NEO data...</div>;
+    return <Loader />; 
   }
 
   if (error) {
@@ -41,9 +42,9 @@ const NeoVisualization = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           <motion.div
             className="bg-gray-50 p-4 rounded-lg shadow-md"
-            whileHover={{ scale: 1.05, rotate: 2 }} 
-            whileTap={{ scale: 0.95 }} 
-            transition={{ type: 'spring', stiffness: 300 }} 
+            whileHover={{ scale: 1.05, rotate: 2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 300 }}
           >
             <h3 className="text-lg font-semibold mb-4">Asteroid Size Distribution</h3>
             <BarChart data={neoData} />
