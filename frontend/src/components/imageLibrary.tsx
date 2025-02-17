@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { BarChart, ScatterChart, LineChart, DoughnutChart, RadarChart, Heatmap } from '../ui-components/charts';
-import { motion } from 'framer-motion'; 
-import {NeoData} from '../types/neoData_types';
+import { motion } from 'framer-motion';
+import { NeoData } from '../types/neoData_types';
+import { fetchNeo } from '../api/nasaApi'; 
 
 const NeoVisualization = () => {
   const [neoData, setNeoData] = useState<NeoData[] | null>(null);
@@ -10,24 +10,16 @@ const NeoVisualization = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchNeoData = async () => {
-      try {
-        const apiKey = 'DEMO_KEY'; 
-        const response = await axios.get<{ near_earth_objects: Record<string, NeoData[]> }>(
-          `https://api.nasa.gov/neo/rest/v1/feed?start_date=2023-10-01&end_date=2023-10-07&api_key=${apiKey}`
-        );
-
-        const flattenedData = Object.values(response.data.near_earth_objects).flat();
-        setNeoData(flattenedData);
+    fetchNeo()
+      .then((response) => {
+        setNeoData(response);
         setLoading(false);
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error('Error fetching NEO data:', error);
         setError('Failed to fetch NEO data. Please try again later.');
         setLoading(false);
-      }
-    };
-
-    fetchNeoData();
+      });
   }, []);
 
   if (loading) {

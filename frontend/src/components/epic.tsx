@@ -1,9 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
 import { EPICResponse } from '../types/epicResponse_types';
-import { FaInfoCircle } from 'react-icons/fa'; 
-
-const NASA_API_KEY = import.meta.env.VITE_NASA_API_KEY;
+import { FaInfoCircle } from 'react-icons/fa';
+import { fetchEPIC } from '../api/nasaApi'; 
 
 const EPIC = () => {
   const [data, setData] = useState<EPICResponse[] | null>(null);
@@ -15,21 +13,16 @@ const EPIC = () => {
   const infoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchEPICData = async () => {
-      try {
-        const response = await axios.get(
-          `https://api.nasa.gov/EPIC/api/natural/images?api_key=${NASA_API_KEY}`
-        );
-        setData(response.data);
+    fetchEPIC()
+      .then((response) => {
+        setData(response);
         setLoading(false);
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error('Error fetching EPIC data:', error);
         setError('Failed to fetch EPIC data. Please try again later.');
         setLoading(false);
-      }
-    };
-
-    fetchEPICData();
+      });
   }, []);
 
   useEffect(() => {

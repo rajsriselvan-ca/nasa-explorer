@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import {APODResponse} from '../types/apodResponse_types';
-
-
-const NASA_API_KEY = import.meta.env.VITE_NASA_API_KEY;
+import { APODResponse } from '../types/apodResponse_types';
+import { fetchAPOD } from '../api/nasaApi'; 
 
 const APOD = () => {
   const [data, setData] = useState<APODResponse | null>(null);
@@ -11,10 +8,9 @@ const APOD = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    axios
-      .get(`https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`)
+    fetchAPOD()
       .then((response) => {
-        setData(response.data);
+        setData(response);
         setLoading(false);
       })
       .catch((error) => {
@@ -25,7 +21,7 @@ const APOD = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;   
   }
 
   if (error) {

@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { MarsRoverPhoto } from '../types/marsRoverPhoto_types';
-import { motion } from 'framer-motion'; 
-
-const NASA_API_KEY = import.meta.env.VITE_NASA_API_KEY;
+import { motion } from 'framer-motion';
+import { fetchMarsRoverPhotos } from '../api/nasaApi'; 
 
 const MarsRover = () => {
   const [photos, setPhotos] = useState<MarsRoverPhoto[] | null>(null);
@@ -11,21 +9,16 @@ const MarsRover = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchPhotos = async () => {
-      try {
-        const response = await axios.get(
-          `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=${NASA_API_KEY}`
-        );
-        setPhotos(response.data.photos);
+    fetchMarsRoverPhotos()
+      .then((response) => {
+        setPhotos(response);
         setLoading(false);
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error('Error fetching Mars Rover Photos:', error);
         setError('Failed to fetch Mars Rover photos. Please try again later.');
         setLoading(false);
-      }
-    };
-
-    fetchPhotos();
+      });
   }, []);
 
   if (loading) {
