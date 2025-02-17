@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { fetchMarsRoverPhotos } from '../services/nasaService';
+import { fetchMarsRoverPhotos } from '../services/marsRoverService';
 
 export const getMarsRoverPhotos = async (req: Request, res: Response) => {
   try {

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { fetchAPOD } from '../services/nasaService';
+import { fetchAPOD } from '../services/apodService';
 
 export const getAPOD = async (req: Request, res: Response) => {
   try {

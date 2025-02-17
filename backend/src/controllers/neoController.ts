@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { fetchNeoData } from '../services/nasaService';
+import { fetchNeoData } from '../services/neoService';
 
 export const getNeoData = async (req: Request, res: Response) => {
   try {

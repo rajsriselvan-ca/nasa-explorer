@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { fetchEPIC } from '../services/nasaService';
+import { fetchEPIC } from '../services/epicService';
 
 export const getEPIC = async (req: Request, res: Response) => {
   try {
