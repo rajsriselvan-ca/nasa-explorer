@@ -47,7 +47,6 @@ process.on('SIGINT', async () => {
 });
 
 process.on('SIGTERM', async () => {
-  console.log('Clearing Redis cache before shutdown...');
   await clearCache();
   await redisClient.quit();
   process.exit(0);
