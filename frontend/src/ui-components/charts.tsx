@@ -138,7 +138,7 @@ import { NeoData } from '../types/neoData_types';
         .enter()
         .append('path')
         .attr('d', (d) => arcGenerator(d) || '') 
-        .attr('fill', (d, i) => (i === 0 ? 'red' : '#28282B'))
+        .attr('fill', (d, i) => (i === 0 ? 'red' : '#570987'))
         .attr('transform', 'translate(150, 100)');
     }, [data]);
   

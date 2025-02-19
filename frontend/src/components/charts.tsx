@@ -5,7 +5,7 @@ import { NeoData } from '../types/neoData_types';
 import { fetchNeo } from '../api/nasaApi';
 import Loader from '../ui-components/loader'; 
 
-const NeoVisualization = () => {
+const Charts = () => {
   const [neoData, setNeoData] = useState<NeoData[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -106,4 +106,4 @@ const NeoVisualization = () => {
   );
 };
 
-export default NeoVisualization;
+export default Charts;

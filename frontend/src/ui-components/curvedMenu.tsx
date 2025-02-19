@@ -1,18 +1,22 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { MenuItem } from '../types/menuItem_types';
 import { CurvedMenuProps } from '../types/curvedMenuProps_types';
-import { FaSatellite, FaMars, FaGlobe, FaMeteor, FaImages, FaBars, FaTimes } from 'react-icons/fa';
+import { FaSatellite, FaMars, FaGlobe, FaMeteor, FaChartBar, FaBars, FaTimes } from 'react-icons/fa';
 
 const menuItems: MenuItem[] = [
   { name: 'APOD', path: '/apod', icon: <FaSatellite />, color: 'bg-blue-600', label: 'APOD' },
   { name: 'Mars Rover', path: '/mars-rover', icon: <FaMars />, color: 'bg-red-600', label: 'MarsRover' },
   { name: 'EPIC', path: '/epic', icon: <FaGlobe />, color: 'bg-green-600', label: 'EPIC' },
   { name: 'Near-Earth Objects', path: '/neows', icon: <FaMeteor />, color: 'bg-yellow-600', label: 'NEOs' },
-  { name: 'Image Library', path: '/image-library', icon: <FaImages />, color: 'bg-purple-600', label: 'Images' }
+  { name: 'Charts', path: '/charts', icon: <FaChartBar />, color: 'bg-purple-600', label: 'Charts' }
 ];
 
 const CurvedMenu = ({ isOpen, setIsOpen }: CurvedMenuProps) => {
+  const location = useLocation();
+  // If user on the charts route, use dark gray for menu labels; otherwise white.
+  const labelColorClass = location.pathname === '/charts' ? 'text-black' : 'text-white';
+
   const radius = isOpen ? 150 : 0;
   const angleStep = Math.PI / (menuItems.length - 1);
 
@@ -61,9 +65,13 @@ const CurvedMenu = ({ isOpen, setIsOpen }: CurvedMenuProps) => {
                   >
                     {item.icon}
                   </Link>
-                  <span className="ml-2 text-white text-sm font-semibold">
+                  <motion.span
+                    className={`ml-2 ${labelColorClass} text-sm font-semibold`}
+                    animate={{ opacity: [0.5, 1, 0.5], scale: [1, 1.1, 1] }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+                  >
                     {item.label}
-                  </span>
+                  </motion.span>
                 </motion.div>
               );
             })}
