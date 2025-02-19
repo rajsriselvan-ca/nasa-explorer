@@ -4,7 +4,6 @@ import { MenuItem } from '../types/menuItem_types';
 import { CurvedMenuProps } from '../types/curvedMenuProps_types';
 import { FaSatellite, FaMars, FaGlobe, FaMeteor, FaImages, FaBars, FaTimes } from 'react-icons/fa';
 
-
 const menuItems: MenuItem[] = [
   { name: 'APOD', path: '/apod', icon: <FaSatellite />, color: 'bg-blue-600', label: 'APOD' },
   { name: 'Mars Rover', path: '/mars-rover', icon: <FaMars />, color: 'bg-red-600', label: 'MarsRover' },

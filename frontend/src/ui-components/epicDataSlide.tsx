@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import NoImageFallBack from '../../assets/images/no_image.jpg';
-import { EpicDataSlideProps } from '../ui-components/epicDataSlideProps';
+import { EpicDataSlideProps } from '../types/epicDateSlideProps';
 import EpicInfoButton from './epicInfoButton';
 import EpicNavigationButtons from './epicNavigationButtons';
 
