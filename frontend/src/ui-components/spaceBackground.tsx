@@ -1,4 +1,3 @@
-
 const SpaceBackground = () => {
   const stars = Array.from({ length: 200 }).map((_, i) => (
     <div

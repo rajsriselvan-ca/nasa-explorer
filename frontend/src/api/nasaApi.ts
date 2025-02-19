@@ -7,8 +7,10 @@ export const fetchAPOD = async () => {
   return response.data;
 };
 
-export const fetchEPIC = async () => {
-  const response = await axios.get(`${API_BASE_URL}/epic`);
+export const fetchEPIC = async (date?: string) => {
+  // Append the date as a query parameter if provided
+  const url = date ? `${API_BASE_URL}/epic?date=${date}` : `${API_BASE_URL}/epic`;
+  const response = await axios.get(url);
   return response.data;
 };
 

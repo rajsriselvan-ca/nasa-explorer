@@ -12,11 +12,9 @@ const InputField: React.FC<InputFieldProps> = ({
 }) => {
   return (
     <div className={`flex items-center ${className}`}>
-      {/* Inline label */}
       <label htmlFor={id} className="mr-2 text-white whitespace-nowrap">
         {label}
       </label>
-      {/* Input field */}
       <input
         type={type}
         id={id}
