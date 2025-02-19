@@ -1,14 +1,7 @@
 import React from 'react';
 import { FaInfoCircle } from 'react-icons/fa';
 import { EpicInfoButtonProps } from '../types/epicInfoButtonProps';
-
-// Utility function to format the date string
-const formatDate = (dateStr: string) => {
-  const [datePart, timePart] = dateStr.split(' ');
-  if (!datePart) return dateStr;
-  const [year, month, day] = datePart.split('-');
-  return `${day}-${month}-${year}${timePart ? ' ' + timePart : ''}`;
-};
+import { formatDate } from '../helper-functions/formatDate';
 
 // Use forwardRef so the parent can attach a ref (for detecting outside clicks)
 const EpicInfoButton = React.forwardRef<HTMLDivElement, EpicInfoButtonProps>(

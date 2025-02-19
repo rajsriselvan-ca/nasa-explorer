@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { APODResponse } from '../types/apodResponse_types';
 import { fetchAPOD } from '../api/nasaApi';
 import Loader from '../ui-components/loader'; 
+import { formatDate } from '../helper-functions/formatDate';
 
 const APOD = () => {
   const [data, setData] = useState<APODResponse | null>(null);
@@ -63,7 +64,7 @@ const APOD = () => {
           )}
         </div>
       )}
-      <p className="text-sm text-gray-400 mt-4">Date: {data.date}</p>
+      <p className="text-sm text-gray-400 mt-4">Date: {formatDate(data.date)}</p>
     </div>
   );
 };
