@@ -4,8 +4,8 @@ import InputField from '../ui-components/inputField';
 import FetchButton from '../ui-components/fetchButton';
 import PhotoGrid from '../ui-components/photoGrid';
 import PhotoModal from '../ui-components/photoModal';
-import NoDataMessage from '../ui-components/noDataErrorMessage'; 
-import ErrorFallback from '../error-handling/ErrorFallback'; 
+import NoDataMessage from '../ui-components/noDataErrorMessage';
+import ErrorFallback from '../error-handling/ErrorFallback';
 
 const MarsRover = () => {
   const {
@@ -25,19 +25,19 @@ const MarsRover = () => {
     formatDate,
   } = useMarsRover();
 
-  if(error) {
+  if (error) {
     return <ErrorFallback message={error} onRetry={handleFetchPhotos} />;
   }
 
   return (
-    <div className="p-4">
+    <div className="p-4 min-h-screen">
       <h2 className="text-2xl font-bold mb-4 text-white">Mars Rover Photos</h2>
       <form
         onSubmit={(e) => {
           e.preventDefault();
           handleFetchPhotos();
         }}
-        className="mb-4 flex items-center space-x-4"
+        className="mb-4 flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0"
       >
         <InputField
           id="sol"
@@ -46,8 +46,9 @@ const MarsRover = () => {
           onChange={setSolInput}
           type="number"
           min="1"
+          className="w-full md:w-auto"
         />
-        <FetchButton disabled={isButtonDisabled} type="submit">
+        <FetchButton disabled={isButtonDisabled} type="submit" className="w-full md:w-auto">
           Fetch Photos
         </FetchButton>
       </form>

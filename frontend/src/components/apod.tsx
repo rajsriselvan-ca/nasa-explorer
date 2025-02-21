@@ -43,7 +43,7 @@ const APOD = () => {
   const isYouTubeVideo = data.url.includes('youtube.com') || data.url.includes('youtu.be');
 
   return (
-    <div className="p-4 bg-gray-900 text-white rounded-lg shadow-lg">
+    <div className="p-4 bg-gray-900 text-white rounded-lg shadow-lg h-full overflow-y-auto">
       <h2 className="text-2xl font-bold mb-4">{data.title}</h2>
       <p className="text-gray-300 mb-4">{data.explanation}</p>
       {data.media_type === 'image' ? (
