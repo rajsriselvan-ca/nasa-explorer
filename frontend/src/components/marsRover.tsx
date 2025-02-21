@@ -5,6 +5,7 @@ import FetchButton from '../ui-components/fetchButton';
 import PhotoGrid from '../ui-components/photoGrid';
 import PhotoModal from '../ui-components/photoModal';
 import NoDataMessage from '../ui-components/noDataErrorMessage'; 
+import ErrorFallback from '../error-handling/ErrorFallback'; 
 
 const MarsRover = () => {
   const {
@@ -23,6 +24,10 @@ const MarsRover = () => {
     setSelectedPhoto,
     formatDate,
   } = useMarsRover();
+
+  if(error) {
+    return <ErrorFallback message={error} onRetry={handleFetchPhotos} />;
+  }
 
   return (
     <div className="p-4">

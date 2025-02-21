@@ -27,7 +27,7 @@ const useInfiniteScroll = <T,>(
         setData((prev) => (page === 1 ? newData : [...prev, ...newData]));
         setHasMore(newData.length > 0);
       } catch (err) {
-        setError(`Failed to fetch data: ${err instanceof Error ? err.message : 'Unknown error'}. Please try again later.`);
+        setError(`Failed to fetch data: ${err instanceof Error ? err.message : 'Unknown error'}`);
       } finally {
         setLoading(false);
       }

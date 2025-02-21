@@ -3,6 +3,7 @@ import { Line, Bar, Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
 import { fetchNeo } from '../api/nasaApi'; 
 import { motion } from 'framer-motion';
+import Loader from '../ui-components/loader'; 
 
 type NeoData = {
   estimated_diameter: {
@@ -33,7 +34,7 @@ const Charts = () => {
   }, []);
 
   if (loading) {
-    return <div className="p-8">Loading...</div>;
+    return <Loader />
   }
   if (error) {
     return <div className="p-8 text-red-500">{error}</div>;
