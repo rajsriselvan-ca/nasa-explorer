@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { APODResponse } from '../types/apodResponse_types';
 import { fetchAPOD } from '../api/nasaApi';
 import Loader from '../ui-components/loader'; 
+import ErrorFallback from '../error-handling/ErrorFallback'; 
 import { formatDate } from '../helper-functions/formatDate';
 
 const APOD = () => {
@@ -9,29 +10,34 @@ const APOD = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchAPOD()
-      .then((response) => {
-        setData(response);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching APOD data:', error);
-        setError('Failed to fetch data. Please try again later.');
-        setLoading(false);
-      });
+  // Function to fetch APOD data & Use useCallback to prevent re-creation of fetchData function
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetchAPOD();
+      setData(response);
+    } catch (error) {
+      setError(error as string); 
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   if (loading) {
     return <Loader />; 
   }
 
   if (error) {
-    return <div className="text-red-500">{error}</div>;
+    return <ErrorFallback message={error} onRetry={fetchData} />;
   }
 
   if (!data) {
-    return <div>No data available.</div>;
+    return <div className="text-white">No data available.</div>;
   }
 
   const isYouTubeVideo = data.url.includes('youtube.com') || data.url.includes('youtu.be');
