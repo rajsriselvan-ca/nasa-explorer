@@ -8,7 +8,6 @@ import Header from './ui-components/header';
 import APOD from './components/apod';
 import MarsRover from './components/marsRover';
 import EPIC from './components/epic';
-import NeoWs from './components/neows';
 import Charts from './components/charts';
 
 
@@ -27,7 +26,6 @@ const App = () => {
             <Route path="/apod" element={<APOD />} />
             <Route path="/mars-rover" element={<MarsRover />} />
             <Route path="/epic" element={<EPIC />} />
-            <Route path="/neows" element={<NeoWs />} />
             <Route path="/charts" element={<Charts />} />
           </Routes>
         </div>

@@ -2,13 +2,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { MenuItem } from '../types/menuItem_types';
 import { CurvedMenuProps } from '../types/curvedMenuProps_types';
-import { FaSatellite, FaMars, FaGlobe, FaMeteor, FaChartBar, FaBars, FaTimes } from 'react-icons/fa';
+import { FaSatellite, FaMars, FaGlobe, FaChartBar, FaBars, FaTimes } from 'react-icons/fa';
 
 const menuItems: MenuItem[] = [
   { name: 'APOD', path: '/apod', icon: <FaSatellite />, color: 'bg-blue-600', label: 'APOD' },
   { name: 'Mars Rover', path: '/mars-rover', icon: <FaMars />, color: 'bg-red-600', label: 'MarsRover' },
   { name: 'EPIC', path: '/epic', icon: <FaGlobe />, color: 'bg-green-600', label: 'EPIC' },
-  { name: 'Near-Earth Objects', path: '/neows', icon: <FaMeteor />, color: 'bg-yellow-600', label: 'NEOs' },
   { name: 'Charts', path: '/charts', icon: <FaChartBar />, color: 'bg-purple-600', label: 'Charts' }
 ];
 
