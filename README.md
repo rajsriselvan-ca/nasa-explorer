@@ -37,6 +37,13 @@ git clone https://github.com/rajsriselvan-ca/nasa-explorer.git
 ```bash
 cd frontend
 ```
+🔧 Environment Setup
+```.env
+VITE_NASA_API_KEY= <Your Nasa Api Key>
+VITE_API_BASE_URL=https://nasa-explorer-10kx.onrender.com/api
+```
+(You can get Nasa key here : https://api.nasa.gov/)
+
 🚀 Run the app:
 ```bash
 npm install
@@ -49,7 +56,7 @@ npm run dev
 Deployed on Netlify. 
 
 
-🛸🌎✨ NasaPortal [Nasa Exploring App] (Backend)
+🛸🌎✨ NasaPortal [Nasa Exploring App] (Backend)\
 Built with Node.js and Express.js, the backend efficiently handles API requests and data processing.
 Redis is integrated for caching, reducing latency and optimizing repeated API calls to NASA's APIs
 (e.g., APOD, Mars Rover, EPIC, NeoWs). The backend ensures seamless data fetching, caching, and delivery to the frontend,
@@ -72,6 +79,14 @@ git clone https://github.com/rajsriselvan-ca/nasa-explorer.git
 ```bash
 cd backend
 ```
+🔧 Environment Setup
+```.env
+NASA_API_KEY= <Your Nasa Api Key>
+PORT=5000
+REDIS_URL=rediss://default:AT5EAAIjcDFkNmQ5YTMzMTJkM2Y0YTlhOWM3YjMyMDQzNmI5ODAxNXAxMA@fast-beetle-15940.upstash.io:6379
+```
+(You can get Nasa key here : https://api.nasa.gov/)
+
 🚀 Run the app:
 ```bash
 npm install
@@ -86,16 +101,3 @@ Deployed on Render.
 🤝 Contributing
 
 If you find a bug, have a feature suggestion, or want to contribute, feel free to open an issue or submit a pull request!" 🚀
-
-
-
-
-
-
-
-
-
-
-
-
-
