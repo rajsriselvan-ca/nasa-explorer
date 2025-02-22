@@ -7,7 +7,8 @@ users with an immersive space exploration experience. The app integrates multipl
 https://nasaportal.netlify.app/
 ```
 
-To deliver stunning visuals and insights, including:\ 
+To deliver stunning visuals and insights, including:
+
 ✨Astronomy Picture of the Day (APOD): Displays NASA's daily curated space images with descriptions.\
 ✨Mars Rover Photos: Allows users to explore images captured by Mars rovers (like Curiosity, Perseverance) based on selected dates.\
 ✨EPIC Images: Showcases Earth Polychromatic Imaging Camera (EPIC) images, offering breathtaking views of Earth from space, filterable by dates.\
