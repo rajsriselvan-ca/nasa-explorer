@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from 'react';
-import NoImageFallBack from '../../assets/images/no_image.jpg';
 import { EpicDataSlideProps } from '../types/epicDateSlideProps';
 import EpicInfoButton from './epicInfoButton';
 import EpicNavigationButtons from './epicNavigationButtons';
@@ -35,7 +34,7 @@ const EpicDataSlide: React.FC<EpicDataSlideProps> = ({
         {imageError ? (
           <div className="w-full h-64 flex items-center justify-center text-white">
             <img
-              src={NoImageFallBack}
+              src="/assets/images/no_image.jpg"
               alt="No image available"
               className="max-h-full max-w-full object-contain"
             />
@@ -54,7 +53,7 @@ const EpicDataSlide: React.FC<EpicDataSlideProps> = ({
             alt={data[currentIndex].caption}
             className="w-full h-auto object-contain"
             onError={(e) => {
-              e.currentTarget.src = NoImageFallBack;
+              e.currentTarget.src = "/assets/images/no_image.jpg";
               setImageError(true);
             }}
           />
